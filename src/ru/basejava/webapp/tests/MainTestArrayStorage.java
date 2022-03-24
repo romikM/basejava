@@ -1,5 +1,6 @@
 package ru.basejava.webapp.tests;
 
+import ru.basejava.webapp.storage.Storage;
 import ru.basejava.webapp.storage.ArrayStorage;
 import ru.basejava.webapp.model.Resume;
 
@@ -7,7 +8,7 @@ import ru.basejava.webapp.model.Resume;
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();

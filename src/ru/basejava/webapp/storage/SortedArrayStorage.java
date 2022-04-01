@@ -11,19 +11,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertItem(Resume r, int index) {
-        int insertPoint = -index - 1; // вычисляем позицию "дырки" для нового эл-та по результатам Arrays.binarySearch
+        int insertPoint = -index - 1;
         System.arraycopy(storage, insertPoint, storage, insertPoint + 1, size - insertPoint);
-        // копируем эл-ты после позиции "дырка и далее" на позицию "вправо"
-        storage[insertPoint] = r; // заполняем "дырку"
+        storage[insertPoint] = r;
     }
 
     @Override
     protected void fillEmptyItem(int index) {
-        // System.arrayCopy(fromArr, fromIndex, toArr, toIndex, count);
-        int countMovingItems = size - index - 1; // все эл-ты после "дырки"
-        if (countMovingItems > 0) { // если нечего двигать, то и нечего двигать
+        int countMovingItems = size - index - 1;
+        if (countMovingItems > 0) {
             System.arraycopy(storage, index + 1, storage, index, countMovingItems);
-            // с позиции "следующий после дырки" двигаем на позицию "дырка", все эл-ты после "дырки"
         }
     }
 
@@ -33,8 +30,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * where 'ip' is the 'insertion point' or where the new value should be.
      */
     public int getIndex(String uuid) {
-        Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
+        Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }

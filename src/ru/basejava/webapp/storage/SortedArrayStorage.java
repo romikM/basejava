@@ -29,7 +29,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
      * if the value does not exist in the array, return - ip - 1
      * where 'ip' is the 'insertion point' or where the new value should be.
      */
-    public int getIndex(String uuid) {
+    public Integer getResumeIdx(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }

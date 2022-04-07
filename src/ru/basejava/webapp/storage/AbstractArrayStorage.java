@@ -4,15 +4,16 @@ import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_MAX_SIZE = 10000;
-    protected final Resume[] storage = new Resume[STORAGE_MAX_SIZE];
+    protected Resume[] storage = new Resume[STORAGE_MAX_SIZE];
 
-    protected int size;
+    protected int size = 0;
 
     public int size() {
         return size;
@@ -54,13 +55,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    @Override
+    public List<Resume> makeStorageCopy() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     protected abstract Integer getResumeIdx(String uuid);
 
-    protected abstract void fillEmptyItem(int index);
+    protected abstract void fillEmptyItem(int resumeIdx);
 
-    protected abstract void insertItem(Resume r, int index);
+    protected abstract void insertItem(Resume r, int resumeIdx);
 }

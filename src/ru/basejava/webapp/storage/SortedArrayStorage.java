@@ -10,17 +10,17 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insertItem(Resume r, int index) {
-        int insertPoint = -index - 1;
+    protected void insertItem(Resume r, int resumeIdx) {
+        int insertPoint = -resumeIdx - 1;
         System.arraycopy(storage, insertPoint, storage, insertPoint + 1, size - insertPoint);
         storage[insertPoint] = r;
     }
 
     @Override
-    protected void fillEmptyItem(int index) {
-        int countMovingItems = size - index - 1;
+    protected void fillEmptyItem(int resumeIdx) {
+        int countMovingItems = size - resumeIdx - 1;
         if (countMovingItems > 0) {
-            System.arraycopy(storage, index + 1, storage, index, countMovingItems);
+            System.arraycopy(storage, resumeIdx + 1, storage, resumeIdx, countMovingItems);
         }
     }
 
@@ -33,4 +33,5 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
+
 }

@@ -11,7 +11,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getResumeIdx(String uuid) {
-        for(int i = 0; i<resumeList.size(); i++){
+        for (int i = 0; i < resumeList.size(); i++) {
             if (resumeList.get(i).getUuid().equals(uuid)) {
                 return i;
             }
@@ -20,28 +20,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object resumeIdx) {
-        return resumeIdx != null;
+    protected boolean isExist(Object key) {
+        return key != null;
     }
 
     @Override
-    protected void makeUpdate(Resume r, Object resumeIdx) {
-        resumeList.set((Integer) resumeIdx, r);
+    protected void makeUpdate(Resume r, Object key) {
+        resumeList.set((Integer) key, r);
     }
 
     @Override
-    protected void makeSave(Resume r, Object resumeIdx) {
+    protected void makeSave(Resume r, Object key) {
         resumeList.add(r);
     }
 
     @Override
-    protected Resume makeTake(Object resumeIdx) {
-        return resumeList.get((Integer) resumeIdx);
+    protected Resume makeTake(Object key) {
+        return resumeList.get((Integer) key);
     }
 
     @Override
-    protected void makeDelete(Object resumeIdx) {
-        resumeList.remove(((Integer) resumeIdx).intValue());
+    protected void makeDelete(Object key) {
+        resumeList.remove(((Integer) key).intValue());
     }
 
     @Override
@@ -50,8 +50,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> makeStorageCopy() {
-        return new ArrayList<>(resumeList);
+    public Resume[] getAll() {
+        return resumeList.toArray(new Resume[resumeList.size()]);
     }
 
     @Override

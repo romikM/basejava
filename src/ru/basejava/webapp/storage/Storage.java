@@ -2,8 +2,6 @@ package ru.basejava.webapp.storage;
 
 import ru.basejava.webapp.model.Resume;
 
-import java.util.List;
-
 public interface Storage {
 
     void clear();
@@ -16,7 +14,7 @@ public interface Storage {
 
     void delete(String uuid);
 
-    List<Resume> getAll();
+    Resume[] getAll();
 
     int size();
 }

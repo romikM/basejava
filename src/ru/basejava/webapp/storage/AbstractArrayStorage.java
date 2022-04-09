@@ -4,7 +4,6 @@ import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -24,14 +23,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
+    }
+
+
     @Override
     protected boolean isExist(Object resumeIdx) {
-        return (Integer) resumeIdx >= 0;
+        return (int) resumeIdx >= 0;
     }
 
     @Override
     protected void makeUpdate(Resume r, Object resumeIdx) {
-        storage[(Integer) resumeIdx] = r;
+        storage[(int) resumeIdx] = r;
     }
 
     @Override
@@ -39,25 +43,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size == STORAGE_MAX_SIZE) {
             throw new StorageException("Storage size limit exceed.", r.getUuid());
         }
-        insertItem(r, (Integer) resumeIdx);
+        insertItem(r, (int) resumeIdx);
         size++;
     }
 
     @Override
     protected Resume makeTake(Object resumeIdx) {
-        return storage[(Integer) resumeIdx];
+        return storage[(int) resumeIdx];
     }
 
     @Override
     protected void makeDelete(Object resumeIdx) {
-        fillEmptyItem((Integer) resumeIdx);
+        fillEmptyItem((int) resumeIdx);
         storage[size - 1] = null;
         size--;
-    }
-
-    @Override
-    public List<Resume> makeStorageCopy() {
-        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     protected abstract Integer getResumeIdx(String uuid);

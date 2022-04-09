@@ -6,7 +6,6 @@ import ru.basejava.webapp.storage.ArrayStorage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 
 /**
@@ -63,9 +62,9 @@ public class MainArray {
     }
 
     static void printAll() {
-        List<Resume> all = ARRAY_STORAGE.getAll();
+        Resume[] all = ARRAY_STORAGE.getAll();
         System.out.println("----------------------------");
-        if (all.size() == 0) {
+        if (all.length == 0) {
             System.out.println("Empty");
         } else {
             for (Resume r : all) {

@@ -1,33 +1,36 @@
 package ru.basejava.webapp.storage;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.basejava.webapp.exception.ExistStorageException;
 import ru.basejava.webapp.exception.NotExistStorageException;
-import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    protected final Storage storage;
+    protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-
     private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-
     private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
+    private static final Resume RESUME_4;
+
+    static {
+        RESUME_1 = new Resume(UUID_1, "First Name");
+        RESUME_2 = new Resume(UUID_2, "Last Name");
+        RESUME_3 = new Resume(UUID_3, "Sur Name");
+        RESUME_4 = new Resume(UUID_4, "Just Name");
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -54,8 +57,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        storage.update(RESUME_2);
-        assertSame(RESUME_2, storage.get(UUID_2));
+        Resume newR = new Resume(UUID_2, "Newbie");
+        storage.update(newR);
+        assertTrue(newR == storage.get(UUID_2));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -88,25 +92,10 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] list = storage.getAll();
-        assertEquals(3, list.length);
-        Resume[] test = new ArrayList<Resume>().toArray(new Resume[3]);
-        test[0] = RESUME_3;
-        test[1] = RESUME_1;
-        test[2] = RESUME_2;
-        assertArrayEquals(test, list);
-    }
-
-    private boolean assertArrayEquals(Resume[] arrA, Resume[] arrB) {
-        if (arrA == null && arrB == null) return true;
-
-        if ((arrA == null && arrB != null) || (arrA != null && arrB == null) || (arrA.length != arrB.length)) {
-            return false;
-        }
-        Arrays.sort(arrA);
-        Arrays.sort(arrB);
-        return arrA.equals(arrB);
+    public void getAllSorted() throws Exception {
+        List<Resume> list = storage.getAllSorted();
+        assertEquals(3, list.size());
+        assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -120,18 +109,4 @@ public abstract class AbstractStorageTest {
     public void deleteNotExistingItem() throws Exception {
         storage.delete(UUID_4);
     }
-
-    @Test(expected = StorageException.class)
-    public void checkStorageOverflow() throws Exception {
-        storage.clear();
-        try {
-            for (int i = 1; i <= AbstractArrayStorage.STORAGE_MAX_SIZE; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("Storage overflowed before maximum size reached.");
-        }
-        storage.save(new Resume());
-    }
-
 }

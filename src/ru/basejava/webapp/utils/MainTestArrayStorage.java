@@ -1,8 +1,8 @@
 package ru.basejava.webapp.utils;
 
-import ru.basejava.webapp.storage.Storage;
-import ru.basejava.webapp.storage.ArrayStorage;
 import ru.basejava.webapp.model.Resume;
+import ru.basejava.webapp.storage.ArrayStorage;
+import ru.basejava.webapp.storage.Storage;
 
 /**
  * Test for your ArrayStorage implementation
@@ -11,11 +11,11 @@ public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
+        Resume r1 = new Resume("name one");
         //r1.setUuid("uuid1");
-        Resume r2 = new Resume();
+        Resume r2 = new Resume("name two");
         //r2.setUuid("uuid2");
-        Resume r3 = new Resume();
+        Resume r3 = new Resume("name three");
         //r3.setUuid("uuid3");
 
         ARRAY_STORAGE.save(r1);
@@ -42,7 +42,7 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }

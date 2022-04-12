@@ -3,11 +3,14 @@ package ru.basejava.webapp.storage;
 import ru.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Array based storage for Resumes
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
     protected void insertItem(Resume r, int resumeIdx) {
@@ -24,14 +27,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    /**
-     * Arrays.binarySearch as the 'standard' in Java is to return the position of the value in the array, or,
-     * if the value does not exist in the array, return - ip - 1
-     * where 'ip' is the 'insertion point' or where the new value should be.
-     */
     public Integer getResumeIdx(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+        Resume searchKey = new Resume(uuid, "zomg");
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
 }

@@ -4,6 +4,7 @@ import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -23,45 +24,45 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-
     @Override
-    protected boolean isExist(Object resumeIdx) {
-        return (int) resumeIdx >= 0;
+    public List<Resume> makeStorageDump() {
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     @Override
-    protected void makeUpdate(Resume r, Object resumeIdx) {
-        storage[(int) resumeIdx] = r;
+    protected boolean isExist(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
-    protected void makeSave(Resume r, Object resumeIdx) {
+    protected void makeUpdate(Resume r, Object index) {
+        storage[(int) index] = r;
+    }
+
+    @Override
+    protected void makeSave(Resume r, Object index) {
         if (size == STORAGE_MAX_SIZE) {
             throw new StorageException("Storage size limit exceed.", r.getUuid());
         }
-        insertItem(r, (int) resumeIdx);
+        insertItem(r, (int) index);
         size++;
     }
 
     @Override
-    protected Resume makeTake(Object resumeIdx) {
-        return storage[(int) resumeIdx];
+    protected Resume makeTake(Object index) {
+        return storage[(int) index];
     }
 
     @Override
-    protected void makeDelete(Object resumeIdx) {
-        fillEmptyItem((int) resumeIdx);
+    protected void makeDelete(Object index) {
+        fillEmptyItem((int) index);
         storage[size - 1] = null;
         size--;
     }
 
     protected abstract Integer getResumeIdx(String uuid);
 
-    protected abstract void fillEmptyItem(int resumeIdx);
+    protected abstract void fillEmptyItem(int index);
 
-    protected abstract void insertItem(Resume r, int resumeIdx);
+    protected abstract void insertItem(Resume r, int index);
 }

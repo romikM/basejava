@@ -9,9 +9,8 @@ import java.lang.reflect.Method;
 public class MainReflection {
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        Resume r = new Resume();
+        Resume r = new Resume("newone");
 
-        // why IDEA warns "Raw use of parameterized class 'Class'"???
         Class<? extends Resume> resumeClass;
         resumeClass = r.getClass();
         Field field = resumeClass.getDeclaredFields()[0];

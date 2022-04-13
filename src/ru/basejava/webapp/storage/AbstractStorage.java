@@ -18,9 +18,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void makeDelete(Object key);
 
-    protected abstract Object getResumeIdx(String uuid);
+    protected abstract Object getResume(String uuid);
 
-    protected abstract List<Resume> makeStorageDump();
+    protected abstract List<Resume> getResumeList();
 
     public void update(Resume r) {
         Object key = getExistingResumeKey(r.getUuid());
@@ -43,7 +43,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object getExistingResumeKey(String uuid) {
-        Object key = getResumeIdx(uuid);
+        Object key = getResume(uuid);
         if (!isExist(key)) {
             throw new NotExistStorageException(uuid);
         }
@@ -51,7 +51,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object getNotExistingResumeKey(String uuid) {
-        Object key = getResumeIdx(uuid);
+        Object key = getResume(uuid);
         if (isExist(key)) {
             throw new ExistStorageException(uuid);
         }
@@ -60,7 +60,7 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> list = makeStorageDump();
+        List<Resume> list = getResumeList();
         Collections.sort(list);
         return list;
     }

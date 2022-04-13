@@ -25,7 +25,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> makeStorageDump() {
+    public List<Resume> getResumeList() {
         return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    protected abstract Integer getResumeIdx(String uuid);
+    protected abstract Integer getResume(String uuid);
 
     protected abstract void fillEmptyItem(int index);
 

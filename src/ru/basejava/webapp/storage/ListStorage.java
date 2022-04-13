@@ -10,7 +10,7 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    protected Object getResumeIdx(String uuid) {
+    protected Object getResume(String uuid) {
         for (int i = 0; i < resumeList.size(); i++) {
             if (resumeList.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -50,7 +50,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> makeStorageDump() {
+    public List<Resume> getResumeList() {
         return new ArrayList<>(resumeList);
     }
 

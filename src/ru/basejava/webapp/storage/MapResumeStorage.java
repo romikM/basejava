@@ -36,12 +36,12 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> makeStorageDump() {
+    public List<Resume> getResumeList() {
         return new ArrayList<>(storage.values());
     }
 
     @Override
-    protected Resume getResumeIdx(String uuid) {
+    protected Resume getResume(String uuid) {
         return storage.get(uuid);
     }
 

@@ -3,10 +3,10 @@ package ru.basejava.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ObjSection extends AbstractSection {
+public class OrganizationSection extends AbstractSection {
     private final List<Organization> organizations;
 
-    public ObjSection(List<Organization> organizations) {
+    public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "Empty organizations not allowed!");
         this.organizations = organizations;
     }
@@ -20,7 +20,7 @@ public class ObjSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ObjSection that = (ObjSection) o;
+        OrganizationSection that = (OrganizationSection) o;
 
         return organizations.equals(that.organizations);
     }

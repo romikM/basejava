@@ -1,25 +1,30 @@
 package ru.basejava.webapp.model;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
+import static ru.basejava.webapp.utils.DateUtil.NOW;
+import static ru.basejava.webapp.utils.DateUtil.of;
 
 public class Organization {
 
     private final String title;
-    private final String description;
-    private final LocalDate dateFrom;
-    private final LocalDate dateTo;
     private final String url;
 
-    public Organization(String title, String description, LocalDate dateFrom, LocalDate dateTo, String url) {
-        Objects.requireNonNull(dateFrom, "Start date can't be null!");
-        Objects.requireNonNull(dateTo, "End date can't be null!");
-        Objects.requireNonNull(title, "Title can't be null!");
+    private List<CareerStage> stages = new ArrayList<>();
+
+    public Organization(String title, String url, CareerStage... stages) {
+        this(title, url, Arrays.asList(stages));
+    }
+
+    public Organization(String title, String url, List<CareerStage> stages) {
         this.title = title;
-        this.description = description;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
         this.url = url;
+        this.stages = stages;
     }
 
     @Override
@@ -30,15 +35,15 @@ public class Organization {
         Organization that = (Organization) o;
 
         if (!title.equals(that.title)) return false;
-        if (!dateFrom.equals(that.dateFrom)) return false;
-        return dateTo.equals(that.dateTo);
+        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        return stages.equals(that.stages);
     }
 
     @Override
     public int hashCode() {
         int result = title.hashCode();
-        result = 31 * result + dateFrom.hashCode();
-        result = 31 * result + dateTo.hashCode();
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + stages.hashCode();
         return result;
     }
 
@@ -46,10 +51,72 @@ public class Organization {
     public String toString() {
         return "Organization{" +
                 "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", dateFrom=" + dateFrom +
-                ", dateTo=" + dateTo +
                 ", url='" + url + '\'' +
+                ", stages=" + stages +
                 '}';
+    }
+
+    public static class CareerStage {
+        private final String description;
+        private final LocalDate dateFrom;
+        private final LocalDate dateTo;
+
+        public CareerStage(int yearFrom, Month monthFrom, String description) {
+            this(of(yearFrom, monthFrom), NOW, description);
+        }
+
+        public CareerStage(int startYear, Month startMonth, int endYear, Month endMonth, String description) {
+            this(of(startYear, startMonth), of(endYear, endMonth), description);
+        }
+
+        public CareerStage(LocalDate dateFrom, LocalDate dateTo, String description) {
+            Objects.requireNonNull(dateFrom, "DateFrom can't be null");
+            Objects.requireNonNull(dateTo, "DateTo can't be null");
+            Objects.requireNonNull(description, "Description can't be null");
+            this.dateFrom = dateFrom;
+            this.dateTo = dateTo;
+            this.description = description;
+        }
+
+        public LocalDate getdateFrom() {
+            return dateFrom;
+        }
+
+        public LocalDate getdateTo() {
+            return dateTo;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CareerStage that = (CareerStage) o;
+
+            if (!description.equals(that.description)) return false;
+            if (!dateFrom.equals(that.dateFrom)) return false;
+            return dateTo.equals(that.dateTo);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = description.hashCode();
+            result = 31 * result + dateFrom.hashCode();
+            result = 31 * result + dateTo.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "CareerStage{" +
+                    "description='" + description + '\'' +
+                    ", dateFrom=" + dateFrom +
+                    ", dateTo=" + dateTo +
+                    '}';
+        }
     }
 }

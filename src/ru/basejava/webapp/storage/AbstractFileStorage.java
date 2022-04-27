@@ -10,11 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private File directory;
-
-    protected abstract void makeWrite(Resume r, File file) throws IOException;
-
-    protected abstract Resume makeRead(File file) throws IOException;
+    private final File directory;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "Directory can't be null!");
@@ -26,6 +22,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
         this.directory = directory;
     }
+
+    protected abstract void makeWrite(Resume r, File file) throws IOException;
+
+    protected abstract Resume makeRead(File file) throws IOException;
 
     @Override
     public void clear() {

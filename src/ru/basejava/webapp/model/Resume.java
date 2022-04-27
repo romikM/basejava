@@ -10,12 +10,11 @@ import java.util.UUID;
  */
 public class Resume implements Comparable<Resume> {
 
+    public final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    public final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
     // Unique identifier
     private final String uuid;
     private final String fullName;
-
-    public final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    public final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);

@@ -35,7 +35,7 @@ public class ResumeTestData {
         achi.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achi.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
 
-        resume.sections.put(SectionType.ACHIEVMENT, new ListSection(achi));
+        resume.sections.put(SectionType.ACHIEVEMENT, new ListSection(achi));
 
         List<String> qual = new ArrayList<>();
 
@@ -126,7 +126,7 @@ public class ResumeTestData {
         educ.add(edu1);
         educ.add(edu2);
 
-        resume.sections.put(SectionType.EXPIRIENCE, new OrganizationSection(jobs));
+        resume.sections.put(SectionType.EXPERIENCE, new OrganizationSection(jobs));
 
         //System.out.println(resume.sections);
 

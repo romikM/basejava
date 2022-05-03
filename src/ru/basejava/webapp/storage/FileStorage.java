@@ -3,17 +3,18 @@ package ru.basejava.webapp.storage;
 import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private final File directory;
+    protected StreamSerializerInterface ssi;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, StreamSerializerInterface ssi) {
         Objects.requireNonNull(directory, "Directory can't be null!");
+        this.ssi = ssi;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory!");
         }
@@ -22,10 +23,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
         this.directory = directory;
     }
-
-    protected abstract void makeWrite(Resume r, File file) throws IOException;
-
-    protected abstract Resume makeRead(File file) throws IOException;
 
     @Override
     public void clear() {
@@ -41,7 +38,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         String[] list = directory.list();
         if (list == null) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error");
         }
         return list.length;
     }
@@ -54,7 +51,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void makeUpdate(Resume r, File file) {
         try {
-            makeWrite(r, file);
+            ssi.makeWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -78,7 +75,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume makeTake(File file) {
         try {
-            return makeRead(file);
+            return ssi.makeRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File read error", file.getName(), e);
         }
@@ -95,7 +92,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getResumeList() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error");
         }
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {

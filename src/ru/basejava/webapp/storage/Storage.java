@@ -2,6 +2,7 @@ package ru.basejava.webapp.storage;
 
 import ru.basejava.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -18,5 +19,5 @@ public interface Storage {
 
     List<Resume> getAllSorted();
 
-    int size();
+    int size() throws IOException;
 }

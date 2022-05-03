@@ -1,5 +1,7 @@
 package ru.basejava.webapp.model;
 
-abstract public class AbstractSection {
+import java.io.Serializable;
+
+abstract public class AbstractSection implements Serializable {
 
 }

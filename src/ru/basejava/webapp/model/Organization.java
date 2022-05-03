@@ -1,5 +1,6 @@
 package ru.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.Objects;
 import static ru.basejava.webapp.utils.DateUtil.NOW;
 import static ru.basejava.webapp.utils.DateUtil.of;
 
-public class Organization {
-
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String title;
     private final String url;
 
@@ -56,7 +57,7 @@ public class Organization {
                 '}';
     }
 
-    public static class CareerStage {
+    public static class CareerStage implements Serializable {
         private final String description;
         private final LocalDate dateFrom;
         private final LocalDate dateTo;

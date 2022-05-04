@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    protected StreamSerializerInterface ssi;
+    private StreamSerializerInterface ssi;
 
     protected FileStorage(File directory, StreamSerializerInterface ssi) {
         Objects.requireNonNull(directory, "Directory can't be null!");
@@ -26,21 +26,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
+            for (File file : getFilesList()) {
                 makeDelete(file);
             }
-        }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory read error");
-        }
-        return list.length;
+        return getFilesList().length;
     }
 
     @Override
@@ -90,14 +83,19 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getResumeList() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory read error");
-        }
-        List<Resume> list = new ArrayList<>(files.length);
-        for (File file : files) {
+        List<Resume> list = new ArrayList<>(getFilesList().length);
+        for (File file : getFilesList()) {
             list.add(makeTake(file));
         }
         return list;
     }
+
+    private File[] getFilesList() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory read error");
+        }
+        return files;
+    }
+
 }

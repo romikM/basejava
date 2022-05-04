@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    protected StreamSerializerInterface ssi;
+    private StreamSerializerInterface ssi;
 
     protected PathStorage(String dir, StreamSerializerInterface ssi) {
         directory = Paths.get(dir);
@@ -100,5 +100,4 @@ public class PathStorage extends AbstractStorage<Path> {
             throw new StorageException("Dir read error", e);
         }
     }
-
 }

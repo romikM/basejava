@@ -1,4 +1,4 @@
-package ru.basejava.webapp.storage;
+package ru.basejava.webapp.storage.serializer;
 
 import ru.basejava.webapp.exception.StorageException;
 import ru.basejava.webapp.model.Resume;

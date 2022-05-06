@@ -5,7 +5,9 @@ import java.util.Objects;
 
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
-    private final List<String> content;
+    private List<String> content;
+
+    public ListSection() {}
 
     public ListSection(List<String> content) {
         Objects.requireNonNull(content, "Empty content not allowed!");

@@ -1,5 +1,10 @@
 package ru.basejava.webapp.model;
 
+import ru.basejava.webapp.utils.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -11,12 +16,15 @@ import java.util.Objects;
 import static ru.basejava.webapp.utils.DateUtil.NOW;
 import static ru.basejava.webapp.utils.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final String title;
-    private final String url;
+    private String title;
+    private String url;
 
     private List<CareerStage> stages = new ArrayList<>();
+
+    public Organization() {}
 
     public Organization(String title, String url, CareerStage... stages) {
         this(title, url, Arrays.asList(stages));
@@ -26,6 +34,18 @@ public class Organization implements Serializable {
         this.title = title;
         this.url = url;
         this.stages = stages;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public List<CareerStage> getStages() {
+        return stages;
     }
 
     @Override
@@ -57,10 +77,15 @@ public class Organization implements Serializable {
                 '}';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class CareerStage implements Serializable {
-        private final String description;
-        private final LocalDate dateFrom;
-        private final LocalDate dateTo;
+        private String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate dateFrom;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate dateTo;
+
+        public CareerStage() {}
 
         public CareerStage(int yearFrom, Month monthFrom, String description) {
             this(of(yearFrom, monthFrom), NOW, description);

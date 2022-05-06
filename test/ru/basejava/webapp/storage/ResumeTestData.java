@@ -127,6 +127,7 @@ public class ResumeTestData {
         educ.add(edu2);
 
         resume.sections.put(SectionType.EXPERIENCE, new OrganizationSection(jobs));
+        resume.sections.put(SectionType.EDUCATION, new OrganizationSection(educ));
 
         //System.out.println(resume.sections);
 

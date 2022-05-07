@@ -5,28 +5,23 @@ import ru.basejava.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializerInterface {
 
     @Override
     public void makeWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
-
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
 
-            Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeItems(dos, r.getContacts().entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
-            Map<SectionType, AbstractSection> sections = r.sections;
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+            writeItems(dos, r.sections.entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
@@ -37,30 +32,23 @@ public class DataStreamSerializer implements StreamSerializerInterface {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        List<String> qual = ((ListSection) section).getContent();
-                        dos.writeInt(qual.size());
-                        for (String tmp : qual){
-                            dos.writeUTF(tmp);
-                        }
+                        writeItems(dos, ((ListSection) section).getContent(), dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         List<Organization> organizations = ((OrganizationSection) section).getOrganizations();
-                        dos.writeInt(organizations.size());
-                        for (Organization org : organizations) {
-                            dos.writeUTF(org.getTitle());
-                            dos.writeUTF(org.getUrl());
-                            List<Organization.CareerStage> stages = org.getStages();
-                            dos.writeInt(stages.size());
-                            for (Organization.CareerStage stage : stages) {
-                                dos.writeUTF(stage.getDescription());
-                                writeLocalDate(dos, stage.getdateFrom());
-                                writeLocalDate(dos, stage.getdateTo());
-                            }
-                        }
+                        writeItems(dos, organizations, orgentry -> {
+                            dos.writeUTF(orgentry.getTitle());
+                            dos.writeUTF(orgentry.getUrl());
+                            writeItems(dos, orgentry.getStages(), stageentry -> {
+                                dos.writeUTF(stageentry.getDescription());
+                                writeLocalDate(dos, stageentry.getdateFrom());
+                                writeLocalDate(dos, stageentry.getdateTo());
+                            });
+                        });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -121,5 +109,16 @@ public class DataStreamSerializer implements StreamSerializerInterface {
 
     private LocalDate readLocalDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
+    }
+
+    private interface theWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private <T> void writeItems(DataOutputStream dos, Collection<T> items, theWriter<T> writer) throws IOException {
+        dos.writeInt(items.size());
+        for (T item : items) {
+            writer.write(item);
+        }
     }
 }

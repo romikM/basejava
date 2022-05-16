@@ -9,6 +9,7 @@ public class MainConcurrency {
     private static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
+
         System.out.println(Thread.currentThread().getName());
 
         Thread thread0 = new Thread() {
@@ -68,7 +69,7 @@ public class MainConcurrency {
                 System.out.println("Prepare to lock object: " + objB);
                 synchronized (objB) {
                     // do something
-                    System.out.println("(never happened) Locked on object: " + objB);
+                    System.out.println("Locked on object: " + objB);
                 }
             }
         }).start();

@@ -1,8 +1,9 @@
 package ru.basejava.webapp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MainHW12 {
@@ -35,31 +36,15 @@ public class MainHW12 {
     }
 
     private static int minValue(int[] values) {
-        int[] result = IntStream.of(values).distinct().toArray();
-        Arrays.sort(result);
-        int res = 0;
-        for (int i = 0; i < result.length; i++) {
-            res = res * 10 + result[i];
-        }
-        return res;
+        return IntStream.of(values).distinct().sorted().reduce(0, (a,b) -> a*10+b);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        List<Integer> odds = new ArrayList<>();
-        List<Integer> evens = new ArrayList<>();
-        int summ = 0;
-        for (int i: integers) {
-            if (i%2==0) {
-                odds.add(i);
-            } else {
-                evens.add(i);
-            }
-            summ+=i;
-        };
-        if (summ%2==0) {
-            return odds;
+        Map<Boolean, List<Integer>> result = integers.stream().collect(Collectors.partitioningBy(p->p%2==0));
+        if (result.get(false).size()%2==0) {
+            return result.get(true);
         }
-        return evens;
+        return result.get(false);
     }
 
     private static List<Integer> makeList(int[] ints) {

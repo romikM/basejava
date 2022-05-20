@@ -83,7 +83,7 @@ public class DataStreamSerializer implements StreamSerializerInterface {
                                 dis.readUTF(),
                                 dis.readUTF(),
                                 createList(dis, () -> new Organization.CareerStage(
-                                   readLocalDate(dis), readLocalDate(dis), dis.readUTF()
+                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF()
                                 ))
                         ))
                 );
@@ -99,18 +99,6 @@ public class DataStreamSerializer implements StreamSerializerInterface {
 
     private LocalDate readLocalDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
-    }
-
-    private interface theWriter<T> {
-        void write(T t) throws IOException;
-    }
-
-    private interface theReader {
-        void read() throws IOException;
-    }
-
-    private interface listItemReader<T> {
-        T readItem() throws IOException;
     }
 
     private <T> void writeItems(DataOutputStream dos, Collection<T> items, theWriter<T> writer) throws IOException {
@@ -134,5 +122,17 @@ public class DataStreamSerializer implements StreamSerializerInterface {
         for (int i = 0; i < size; i++) {
             reader.read();
         }
+    }
+
+    private interface theWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private interface theReader {
+        void read() throws IOException;
+    }
+
+    private interface listItemReader<T> {
+        T readItem() throws IOException;
     }
 }

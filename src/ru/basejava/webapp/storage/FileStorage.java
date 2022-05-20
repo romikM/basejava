@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    private StreamSerializerInterface ssi;
+    private final StreamSerializerInterface ssi;
 
     protected FileStorage(File directory, StreamSerializerInterface ssi) {
         Objects.requireNonNull(directory, "Directory can't be null!");
@@ -27,9 +27,9 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-            for (File file : getFilesList()) {
-                makeDelete(file);
-            }
+        for (File file : getFilesList()) {
+            makeDelete(file);
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.basejava.webapp.storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.basejava.webapp.Config;
 import ru.basejava.webapp.exception.ExistStorageException;
 import ru.basejava.webapp.exception.NotExistStorageException;
 import ru.basejava.webapp.model.Resume;
@@ -10,15 +11,25 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("/home/roman/IdeaProjects/basejava/storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected Storage storage;
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+
+    /* pre-generated uuids
+cd25c87b-53b1-4a89-b46d-33667b921c38
+dd1c86e5-d1d9-48d1-86b9-64791f8bc3ad
+1146226d-517a-4dc1-b708-7eac3eaedb34
+a19e1e34-0413-4ae7-b6ab-51cf6a7eeb8c
+fcec9d32-ae13-414b-b2bc-dd7a38807c5c
+     */
+
+    private static final String UUID_1 = "cd25c87b-53b1-4a89-b46d-33667b921c38";
+    private static final String UUID_2 = "dd1c86e5-d1d9-48d1-86b9-64791f8bc3ad";
+    private static final String UUID_3 = "1146226d-517a-4dc1-b708-7eac3eaedb34";
+    private static final String UUID_4 = "a19e1e34-0413-4ae7-b6ab-51cf6a7eeb8c";
 
     private static final Resume R1 = ResumeTestData.fillResume(UUID_1, "John Doe");
     private static final Resume R2 = ResumeTestData.fillResume(UUID_2, "James Bond");

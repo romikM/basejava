@@ -24,7 +24,8 @@ public class Organization implements Serializable {
 
     private List<CareerStage> stages = new ArrayList<>();
 
-    public Organization() {}
+    public Organization() {
+    }
 
     public Organization(String title, String url, CareerStage... stages) {
         this(title, url, Arrays.asList(stages));
@@ -56,7 +57,7 @@ public class Organization implements Serializable {
         Organization that = (Organization) o;
 
         if (!title.equals(that.title)) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (!Objects.equals(url, that.url)) return false;
         return stages.equals(that.stages);
     }
 
@@ -85,7 +86,8 @@ public class Organization implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateTo;
 
-        public CareerStage() {}
+        public CareerStage() {
+        }
 
         public CareerStage(int yearFrom, Month monthFrom, String description) {
             this(of(yearFrom, monthFrom), NOW, description);

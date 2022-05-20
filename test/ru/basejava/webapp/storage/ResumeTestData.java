@@ -1,11 +1,7 @@
 package ru.basejava.webapp.storage;
 
-import ru.basejava.webapp.model.*;
-import ru.basejava.webapp.utils.DateUtil;
-
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
+import ru.basejava.webapp.model.ContactType;
+import ru.basejava.webapp.model.Resume;
 
 public class ResumeTestData {
 
@@ -22,7 +18,7 @@ public class ResumeTestData {
         resume.contacts.put(ContactType.WEBPAGE, "http://gkislin.ru/");
 
         //System.out.println(resume.contacts);
-
+/*
         resume.sections.put(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resume.sections.put(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
@@ -128,7 +124,7 @@ public class ResumeTestData {
 
         resume.sections.put(SectionType.EXPERIENCE, new OrganizationSection(jobs));
         resume.sections.put(SectionType.EDUCATION, new OrganizationSection(educ));
-
+*/
         //System.out.println(resume.sections);
 
         return resume;

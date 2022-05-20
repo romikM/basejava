@@ -7,7 +7,8 @@ public class OrganizationSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
     private List<Organization> organizations;
 
-    public OrganizationSection() {}
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "Empty organizations not allowed!");

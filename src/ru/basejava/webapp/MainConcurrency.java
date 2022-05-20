@@ -5,8 +5,8 @@ import java.util.List;
 
 public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
-    private int counter;
     private static final Object LOCK = new Object();
+    private int counter;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -47,13 +47,9 @@ public class MainConcurrency {
 
         final Object objA = new Object();
         final Object objB = new Object();
-        initDeadLock(objA,objB);
-        initDeadLock(objB,objA);
+        initDeadLock(objA, objB);
+        initDeadLock(objB, objA);
 
-    }
-
-    private synchronized void inc() {
-        counter++;
     }
 
     private static void initDeadLock(Object objA, Object objB) {
@@ -73,5 +69,9 @@ public class MainConcurrency {
                 }
             }
         }).start();
+    }
+
+    private synchronized void inc() {
+        counter++;
     }
 }

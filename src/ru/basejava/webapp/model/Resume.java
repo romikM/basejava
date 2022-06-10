@@ -52,6 +52,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public void addFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
     public AbstractSection getSection(SectionType stype) {
         return sections.get(stype);
     }

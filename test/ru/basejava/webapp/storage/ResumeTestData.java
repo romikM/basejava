@@ -1,7 +1,9 @@
 package ru.basejava.webapp.storage;
 
 import ru.basejava.webapp.model.*;
+import ru.basejava.webapp.utils.DateUtil;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class ResumeTestData {
         qual.add("Родной русский, английский \"upper intermediate\"");
 
         resume.sections.put(SectionType.QUALIFICATION, new ListSection(qual));
-/*
+
         Organization org1 = new Organization(
                 "Java Online Projects",
                 "http://javaops.ru/",
@@ -126,7 +128,7 @@ public class ResumeTestData {
 
         resume.sections.put(SectionType.EXPERIENCE, new OrganizationSection(jobs));
         resume.sections.put(SectionType.EDUCATION, new OrganizationSection(educ));
-*/
+
         //System.out.println(resume.sections);
 
         return resume;

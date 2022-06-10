@@ -1,2 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<header><a href="resume">Управление резюме</a></header>
+
+<nav class="navbar fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="http://javaops.ru" target="_blank">JAVAOPS.RU</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+           <a href="resume" class="btn btn-primary" role="button">управление резюме</a>
+        </li>
+    </ul>
+</nav>
+

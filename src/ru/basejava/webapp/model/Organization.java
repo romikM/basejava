@@ -22,6 +22,8 @@ public class Organization implements Serializable {
     private String title;
     private String url;
 
+    public static final Organization EMPTY = new Organization("", "", CareerStage.EMPTY);
+
     private List<CareerStage> stages = new ArrayList<>();
 
     public Organization() {
@@ -80,6 +82,7 @@ public class Organization implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class CareerStage implements Serializable {
+        public static final CareerStage EMPTY = new CareerStage();
         private String description;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateFrom;

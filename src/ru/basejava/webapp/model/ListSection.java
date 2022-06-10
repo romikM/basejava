@@ -1,5 +1,6 @@
 package ru.basejava.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,13 +11,22 @@ public class ListSection extends AbstractSection {
     public ListSection() {
     }
 
+    public ListSection(String... content) {
+        this(Arrays.asList(content));
+    }
+
     public ListSection(List<String> content) {
-        Objects.requireNonNull(content, "Empty content not allowed!");
+        Objects.requireNonNull(content, "content must not be null");
         this.content = content;
     }
 
     public List<String> getContent() {
         return content;
+    }
+
+    @Override
+    public String toString() {
+        return content.toString();
     }
 
     @Override
@@ -27,15 +37,11 @@ public class ListSection extends AbstractSection {
         ListSection that = (ListSection) o;
 
         return content.equals(that.content);
+
     }
 
     @Override
     public int hashCode() {
         return content.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return content.toString();
     }
 }

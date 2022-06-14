@@ -19,10 +19,10 @@ import static ru.basejava.webapp.utils.DateUtil.of;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String title;
-    private String url;
 
     public static final Organization EMPTY = new Organization("", "", CareerStage.EMPTY);
+    private String title;
+    private String url;
 
     private List<CareerStage> stages = new ArrayList<>();
 

@@ -17,6 +17,17 @@ import java.util.UUID;
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Resume EMPTY = new Resume();
+
+    static {
+        EMPTY.addSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+        EMPTY.addSection(SectionType.PERSONAL, TextSection.EMPTY);
+        EMPTY.addSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.addSection(SectionType.QUALIFICATION, ListSection.EMPTY);
+        EMPTY.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+        EMPTY.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+    }
+
     public final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     public final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
     private String uuid;

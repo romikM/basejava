@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage; // = Config.get().getStorage();
@@ -29,8 +30,16 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.addFullName(fullName);
+
+        final boolean createNew = (Objects.equals(uuid, "") || uuid == null);
+        Resume r;
+        if (createNew) {
+            r = new Resume(fullName);
+        } else {
+            r = storage.get(uuid);
+            r.addFullName(fullName);
+        }
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (HtmlUtil.strIsEmpty(value)) {
@@ -79,13 +88,18 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        storage.update(r);
+        if (createNew) {
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
+
         if (action == null) {
             request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
@@ -93,6 +107,9 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume r;
         switch (action) {
+            case "add":
+                r = Resume.EMPTY;
+                break;
             case "delete":
                 storage.delete(uuid);
                 response.sendRedirect("resume");

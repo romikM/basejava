@@ -11,8 +11,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Type" content="text/html">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
-          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <jsp:useBean id="resume" type="ru.basejava.webapp.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
 </head>
@@ -79,7 +79,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <label for="${type}${counter.index}endDate">По какую дату</label>
-                                                    <input type="text" class="form-control" name="${type}${counter.index}endDate" value="<%=DateUtil.format(stage.getdateTo())%>" placeholder="MM/yyyy">
+                                                    <input type="text" class="form-control" name="${type}${counter.index}dateTo" value="<%=DateUtil.format(stage.getdateTo())%>" placeholder="MM/yyyy">
                                                 </div>
                                                 <div class="form-group col-md-10">
                                                     <label for="${type}${counter.index}description">Описание</label>

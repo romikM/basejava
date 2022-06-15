@@ -26,7 +26,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="fullName"><h3>Имя</h3></label>
-                        <input type="text" class="form-control" id="fullName" name="fullName"
+                        <input type="text" class="form-control" required="true" id="fullName" name="fullName"
                                value="${resume.fullName}">
                     </div>
                 </div>

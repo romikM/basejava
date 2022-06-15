@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializerInterface {
 
@@ -16,12 +17,13 @@ public class DataStreamSerializer implements StreamSerializerInterface {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
 
-            writeItems(dos, r.getContacts().entrySet(), entry -> {
+            Map<ContactType, String> contacts = r.getContacts();
+            writeItems(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
 
-            writeItems(dos, r.sections.entrySet(), entry -> {
+            writeItems(dos, r.getSections().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
@@ -36,14 +38,13 @@ public class DataStreamSerializer implements StreamSerializerInterface {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        List<Organization> organizations = ((OrganizationSection) section).getOrganizations();
-                        writeItems(dos, organizations, orgentry -> {
-                            dos.writeUTF(orgentry.getTitle());
-                            dos.writeUTF(orgentry.getUrl());
-                            writeItems(dos, orgentry.getStages(), stageentry -> {
-                                writeLocalDate(dos, stageentry.getdateFrom());
-                                writeLocalDate(dos, stageentry.getdateTo());
-                                dos.writeUTF(stageentry.getDescription());
+                        writeItems(dos, ((OrganizationSection) section).getOrganizations(), org -> {
+                            dos.writeUTF(org.getTitle());
+                            dos.writeUTF(org.getUrl());
+                            writeItems(dos, org.getStages(), stage -> {
+                                writeLocalDate(dos, stage.getdateFrom());
+                                writeLocalDate(dos, stage.getdateTo());
+                                dos.writeUTF(stage.getDescription());
                             });
                         });
                         break;

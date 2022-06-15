@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,7 +62,9 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        r.addSection(type, new ListSection(value.split("\\n")));
+                        ArrayList<String> str = new ArrayList<>(Arrays.asList(value.split("\r\n")));
+                        str.removeAll(Arrays.asList(null,""));
+                        r.addSection(type, new ListSection(str));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
@@ -69,8 +72,8 @@ public class ResumeServlet extends HttpServlet {
                         String[] urls = request.getParameterValues(type.name() + "url");
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
+                            List<Organization.CareerStage> stages = new ArrayList<>();
                             if (!HtmlUtil.strIsEmpty(name)) {
-                                List<Organization.CareerStage> stages = new ArrayList<>();
                                 String pfx = type.name() + i;
                                 String[] datesFrom = request.getParameterValues(pfx + "dateFrom");
                                 String[] datesTo = request.getParameterValues(pfx + "dateTo");
@@ -80,8 +83,8 @@ public class ResumeServlet extends HttpServlet {
                                         stages.add(new Organization.CareerStage(DateUtil.parse(datesFrom[j]), DateUtil.parse(datesTo[j]), descriptions[j]));
                                     }
                                 }
-                                orgs.add(new Organization(name, urls[i], stages));
                             }
+                            orgs.add(new Organization(name, urls[i], stages));
                         }
                         r.addSection(type, new OrganizationSection(orgs));
                         break;
@@ -119,19 +122,38 @@ public class ResumeServlet extends HttpServlet {
                 break;
             case "edit":
                 r = storage.get(uuid);
-                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
-                    OrganizationSection section = (OrganizationSection) r.getSection(type);
-                    List<Organization> emptyFirstOrganizations = new ArrayList<>();
-                    emptyFirstOrganizations.add(Organization.EMPTY);
-                    if (section != null) {
-                        for (Organization org : section.getOrganizations()) {
-                            List<Organization.CareerStage> emptyStages = new ArrayList<>();
-                            emptyStages.add(Organization.CareerStage.EMPTY);
-                            emptyStages.addAll(org.getStages());
-                            emptyFirstOrganizations.add(new Organization(org.getTitle(), org.getUrl(), emptyStages));
-                        }
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = r.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATION:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection orgSection = (OrganizationSection) section;
+                            List<Organization> emptyOrg = new ArrayList<>();
+                            emptyOrg.add(Organization.EMPTY);
+                            if (orgSection != null) {
+                                for (Organization org : orgSection.getOrganizations()) {
+                                    List<Organization.CareerStage> emptyStage = new ArrayList<>();
+                                    emptyStage.add(Organization.CareerStage.EMPTY);
+                                    emptyStage.addAll(org.getStages());
+                                    emptyOrg.add(new Organization(org.getTitle(), org.getUrl(), emptyStage));
+                                }
+                            }
+                            section = new OrganizationSection(emptyOrg);
+                            break;
                     }
-                    r.addSection(type, new OrganizationSection(emptyFirstOrganizations));
+                    r.addSection(type, section);
                 }
                 break;
             default:

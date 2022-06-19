@@ -58,8 +58,7 @@
                                           rows="6"><%=String.join("\n", ((ListSection) section).getContent())%></textarea>
                                 </c:when>
                                 <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>"
-                                               varStatus="counter">
+                                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>" varStatus="counter">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="${type}">Название учереждения</label>
@@ -78,7 +77,7 @@
                                                     <input type="text" class="form-control" name="${type}${counter.index}dateFrom" value="<%=DateUtil.format(stage.getdateFrom())%>" placeholder="MM/yyyy">
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    <label for="${type}${counter.index}endDate">По какую дату</label>
+                                                    <label for="${type}${counter.index}dateTo">По какую дату</label>
                                                     <input type="text" class="form-control" name="${type}${counter.index}dateTo" value="<%=DateUtil.format(stage.getdateTo())%>" placeholder="MM/yyyy">
                                                 </div>
                                                 <div class="form-group col-md-10">

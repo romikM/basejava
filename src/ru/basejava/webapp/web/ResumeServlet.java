@@ -70,11 +70,14 @@ public class ResumeServlet extends HttpServlet {
                     case EXPERIENCE:
                         List<Organization> orgs = new ArrayList<>();
                         String[] urls = request.getParameterValues(type.name() + "url");
+                        System.out.println("urls:" + Arrays.toString(urls));
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
+                            System.out.println("name: " + name);
                             List<Organization.CareerStage> stages = new ArrayList<>();
                             if (!HtmlUtil.strIsEmpty(name)) {
                                 String pfx = type.name() + i;
+                                System.out.println("pfx: " + pfx);
                                 String[] datesFrom = request.getParameterValues(pfx + "dateFrom");
                                 String[] datesTo = request.getParameterValues(pfx + "dateTo");
                                 String[] descriptions = request.getParameterValues(pfx + "description");
@@ -83,8 +86,8 @@ public class ResumeServlet extends HttpServlet {
                                         stages.add(new Organization.CareerStage(DateUtil.parse(datesFrom[j]), DateUtil.parse(datesTo[j]), descriptions[j]));
                                     }
                                 }
+                                orgs.add(new Organization(name, urls[i], stages));
                             }
-                            orgs.add(new Organization(name, urls[i], stages));
                         }
                         r.addSection(type, new OrganizationSection(orgs));
                         break;

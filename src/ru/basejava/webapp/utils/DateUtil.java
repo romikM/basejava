@@ -15,12 +15,23 @@ public class DateUtil {
 
     public static String format(LocalDate date) {
         if (date == null) return "";
-        return date.equals(NOW) ? "Сейчас" : date.format(DATE_FORMATTER);
+        return date.equals(NOW) ? "сейчас" : date.format(DATE_FORMATTER);
     }
 
     public static LocalDate parse(String date) {
-        if (HtmlUtil.strIsEmpty(date) || "Сейчас".equals(date)) return NOW;
+
+        LocalDate currentdate = LocalDate.now();
+        int currentMonth = currentdate.getMonthValue();
+        int currentYear = currentdate.getYear();
+
+        if (HtmlUtil.strIsEmpty(date) || "сейчас".equals(date)) return NOW;
+
         YearMonth yearMonth = YearMonth.parse(date, DATE_FORMATTER);
+
+        if (currentYear == yearMonth.getYear() && currentMonth <= yearMonth.getMonthValue()) {
+            return NOW;
+        }
+
         return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
     }
 }
